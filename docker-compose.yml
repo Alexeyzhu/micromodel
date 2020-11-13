@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  theme_app:
+    container_name: theme_app
+    restart: always
+    build: ./theme_app
+    ports:
+      - "5000:5000"
+    command: gunicorn -w 1 -b 0.0.0.0:5000 wsgi:server
+
+  datetime_app:
+    container_name: datetime_app
+    restart: always
+    build: ./datetime_app
+    ports:
+      - "5001:5001"
+    command: gunicorn -w 1 -b 0.0.0.0:5001 wsgi:server
+
+  nginx:
+    container_name: nginx
+    restart: always
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - theme_app
